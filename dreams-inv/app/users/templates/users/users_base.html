@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container tm-mt-big tm-mb-big">
+      <div class="row">
+        <div class="col-12 mx-auto tm-login-col mb-5">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div class="col-12 text-center">
+                <h2 class="tm-block-title mb-4">{{ header }}</h2>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-12">
+                  {% block content2 %}
+
+                  {% endblock content2 %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

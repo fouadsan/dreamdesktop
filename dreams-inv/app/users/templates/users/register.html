@@ -1,0 +1,37 @@
+{% extends 'users/users_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load widget_tweaks %}
+
+{% block content2 %}
+    <form method="post" class="tm-login-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form_signup.username|add_class:"form-control"|as_crispy_field }}
+      </div>
+      <div class="form-group">
+        {{ form_signup.email|add_class:"form-control"|as_crispy_field }}
+      </div>
+      <div class="form-group mt-3">
+        {{ form_signup.password1|add_class:"form-control"|as_crispy_field }}
+      </div>
+      <div class="form-group mt-3">
+        {{ form_signup.password2|add_class:"form-control"|as_crispy_field }}
+      </div>
+      <div class="form-group mt-4">
+        <button
+          class="btn btn-primary btn-block text-uppercase"
+          name="register"
+          id="register"
+          type="submit"
+          value="Register"
+        >
+          Sign Up
+        </button>
+      </div>
+      <div class="center mt-4">
+          <a class="login-link" href="{% url 'users:login' %}">Login Insted?</a>
+      </div>
+    </form>
+{% endblock content2 %}

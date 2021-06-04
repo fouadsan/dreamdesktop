@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="container mt-5">
+
+        <!-- row -->
+      <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="row tm-content-row">
+            <div class="tm-block-col tm-col-avatar">
+              <div class="tm-bg-primary-dark tm-block tm-block-avatar">
+                <h2 class="tm-block-title">Change Avatar</h2>
+                <div class="tm-avatar-container">
+                  <img
+                    id="img_id"
+                    src="{{ user.profile.image.url }}"
+                    onchange="upload_img(this);"
+                    alt="Avatar"
+                    class="tm-avatar img-fluid mb-4"
+                  />
+
+                  {{ p_form.image }}
+                </div>
+              </div>
+            </div>
+            <div class="tm-block-col tm-col-account-settings">
+              <div class="tm-bg-primary-dark tm-block tm-block-settings">
+                <h2 class="tm-block-title">Account Settings</h2>
+                <div class="tm-signup-form row">
+                  {% csrf_token %}
+                  <div class="form-group col-lg-6">
+                    {{ u_form.username|add_class:"form-control"|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-lg-6">
+                    {{ u_form.email|add_class:"form-control"|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-lg-6">
+                    {{ p_form.phone|add_class:"form-control"|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label class="tm-hide-sm">&nbsp;</label>
+                  </div>
+                  <div class="col-12">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block text-uppercase"
+                    >
+                      Update Your Profile
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </form>
+      </div>
+      <script type="text/javascript">
+          function upload_img(img) {
+              if (img.files && img.files[0]) {
+                  var reader = new FileReader();
+
+                  reader.onload = function (e) {
+                      $('#img_id').attr('src', e.target.result);
+                  }
+
+                  reader.readAsDataURL(img.files[0]);
+              }
+          }
+      </script>
+{% endblock content %}

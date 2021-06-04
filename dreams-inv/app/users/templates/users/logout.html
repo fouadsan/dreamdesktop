@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container center">
+        <h1 class="tm-site-title mt-5">You have successfully logged out. </h1>
+        <p class="text-white mb-5"><a href="{% url 'users:login' %}" class="click-login">Click Here</a> to login again.</p>
+    </div>
+
+
+{% endblock content %}

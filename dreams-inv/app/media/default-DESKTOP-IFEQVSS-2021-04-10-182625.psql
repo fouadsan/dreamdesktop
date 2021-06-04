@@ -1,0 +1,3391 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.2
+-- Dumped by pg_dump version 13.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+ALTER TABLE ONLY public.users_profile DROP CONSTRAINT users_profile_user_id_2112e78d_fk_auth_user_id;
+ALTER TABLE ONLY public.main_producthistory DROP CONSTRAINT main_producthistory_created_by_id_23d7c449_fk_auth_user_id;
+ALTER TABLE ONLY public.main_producthistory DROP CONSTRAINT main_producthistory_category_id_2527e14f_fk_main_category_id;
+ALTER TABLE ONLY public.main_product DROP CONSTRAINT main_product_created_by_id_226a58c0_fk_auth_user_id;
+ALTER TABLE ONLY public.main_product DROP CONSTRAINT main_product_category_id_c0d90f41_fk_main_category_id;
+ALTER TABLE ONLY public.main_barcode DROP CONSTRAINT main_barcode_product_id_0dddc446_fk_main_product_id;
+ALTER TABLE ONLY public.main_barcode DROP CONSTRAINT main_barcode_company_id_a16d03b9_fk_main_company_id;
+ALTER TABLE ONLY public.djcelery_taskstate DROP CONSTRAINT djcelery_taskstate_worker_id_f7f57a05_fk_djcelery_;
+ALTER TABLE ONLY public.djcelery_periodictask DROP CONSTRAINT djcelery_periodictas_interval_id_b426ab02_fk_djcelery_;
+ALTER TABLE ONLY public.djcelery_periodictask DROP CONSTRAINT djcelery_periodictas_crontab_id_75609bab_fk_djcelery_;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_p_solar_id_a87ce72c_fk_django_ce;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_p_interval_id_a8ca27da_fk_django_ce;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_p_crontab_id_d3cba168_fk_django_ce;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_p_clocked_id_47a69f82_fk_django_ce;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co;
+ALTER TABLE ONLY public.background_task DROP CONSTRAINT background_task_creator_content_type_61cc9af3_fk_django_co;
+ALTER TABLE ONLY public.background_task_completedtask DROP CONSTRAINT background_task_comp_creator_content_type_21d6a741_fk_django_co;
+ALTER TABLE ONLY public.auth_user_user_permissions DROP CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id;
+ALTER TABLE ONLY public.auth_user_user_permissions DROP CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm;
+ALTER TABLE ONLY public.auth_user_groups DROP CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id;
+ALTER TABLE ONLY public.auth_user_groups DROP CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm;
+DROP INDEX public.main_producthistory_created_by_id_23d7c449;
+DROP INDEX public.main_producthistory_category_id_2527e14f;
+DROP INDEX public.main_product_created_by_id_226a58c0;
+DROP INDEX public.main_product_category_id_c0d90f41;
+DROP INDEX public.main_category_name_eb0f0831_like;
+DROP INDEX public.main_barcode_company_id_a16d03b9;
+DROP INDEX public.djcelery_workerstate_last_heartbeat_4539b544;
+DROP INDEX public.djcelery_workerstate_hostname_b31c7fab_like;
+DROP INDEX public.djcelery_taskstate_worker_id_f7f57a05;
+DROP INDEX public.djcelery_taskstate_tstamp_4c3f93a1;
+DROP INDEX public.djcelery_taskstate_task_id_9d2efdb5_like;
+DROP INDEX public.djcelery_taskstate_state_53543be4_like;
+DROP INDEX public.djcelery_taskstate_state_53543be4;
+DROP INDEX public.djcelery_taskstate_name_8af9eded_like;
+DROP INDEX public.djcelery_taskstate_name_8af9eded;
+DROP INDEX public.djcelery_taskstate_hidden_c3905e57;
+DROP INDEX public.djcelery_periodictask_name_cb62cda9_like;
+DROP INDEX public.djcelery_periodictask_interval_id_b426ab02;
+DROP INDEX public.djcelery_periodictask_crontab_id_75609bab;
+DROP INDEX public.django_session_session_key_c0390e0f_like;
+DROP INDEX public.django_session_expire_date_a5c62663;
+DROP INDEX public.django_celery_beat_periodictask_solar_id_a87ce72c;
+DROP INDEX public.django_celery_beat_periodictask_name_265a36b7_like;
+DROP INDEX public.django_celery_beat_periodictask_interval_id_a8ca27da;
+DROP INDEX public.django_celery_beat_periodictask_crontab_id_d3cba168;
+DROP INDEX public.django_celery_beat_periodictask_clocked_id_47a69f82;
+DROP INDEX public.django_admin_log_user_id_c564eba6;
+DROP INDEX public.django_admin_log_content_type_id_c4bce8eb;
+DROP INDEX public.celery_tasksetmeta_taskset_id_a5a1d4ae_like;
+DROP INDEX public.celery_tasksetmeta_hidden_593cfc24;
+DROP INDEX public.celery_taskmeta_task_id_9558b198_like;
+DROP INDEX public.celery_taskmeta_hidden_23fd02dc;
+DROP INDEX public.background_task_task_name_4562d56a_like;
+DROP INDEX public.background_task_task_name_4562d56a;
+DROP INDEX public.background_task_task_hash_d8f233bd_like;
+DROP INDEX public.background_task_task_hash_d8f233bd;
+DROP INDEX public.background_task_run_at_7baca3aa;
+DROP INDEX public.background_task_queue_1d5f3a40_like;
+DROP INDEX public.background_task_queue_1d5f3a40;
+DROP INDEX public.background_task_priority_88bdbce9;
+DROP INDEX public.background_task_locked_by_db7779e3_like;
+DROP INDEX public.background_task_locked_by_db7779e3;
+DROP INDEX public.background_task_locked_at_0fb0f225;
+DROP INDEX public.background_task_failed_at_b81bba14;
+DROP INDEX public.background_task_creator_content_type_id_61cc9af3;
+DROP INDEX public.background_task_completedtask_task_name_388dabc2_like;
+DROP INDEX public.background_task_completedtask_task_name_388dabc2;
+DROP INDEX public.background_task_completedtask_task_hash_91187576_like;
+DROP INDEX public.background_task_completedtask_task_hash_91187576;
+DROP INDEX public.background_task_completedtask_run_at_77c80f34;
+DROP INDEX public.background_task_completedtask_queue_61fb0415_like;
+DROP INDEX public.background_task_completedtask_queue_61fb0415;
+DROP INDEX public.background_task_completedtask_priority_9080692e;
+DROP INDEX public.background_task_completedtask_locked_by_edc8a213_like;
+DROP INDEX public.background_task_completedtask_locked_by_edc8a213;
+DROP INDEX public.background_task_completedtask_locked_at_29c62708;
+DROP INDEX public.background_task_completedtask_failed_at_3de56618;
+DROP INDEX public.background_task_completedtask_creator_content_type_id_21d6a741;
+DROP INDEX public.background_task_completedtask_attempts_772a6783;
+DROP INDEX public.background_task_attempts_a9ade23d;
+DROP INDEX public.auth_user_username_6821ab7c_like;
+DROP INDEX public.auth_user_user_permissions_user_id_a95ead1b;
+DROP INDEX public.auth_user_user_permissions_permission_id_1fbb5f2c;
+DROP INDEX public.auth_user_groups_user_id_6a12ed8b;
+DROP INDEX public.auth_user_groups_group_id_97559544;
+DROP INDEX public.auth_permission_content_type_id_2f476e4b;
+DROP INDEX public.auth_group_permissions_permission_id_84c5c92e;
+DROP INDEX public.auth_group_permissions_group_id_b120cbf9;
+DROP INDEX public.auth_group_name_a6ea08ec_like;
+ALTER TABLE ONLY public.users_profile DROP CONSTRAINT users_profile_user_id_key;
+ALTER TABLE ONLY public.users_profile DROP CONSTRAINT users_profile_pkey;
+ALTER TABLE ONLY public.main_producthistory DROP CONSTRAINT main_producthistory_pkey;
+ALTER TABLE ONLY public.main_product DROP CONSTRAINT main_product_pkey;
+ALTER TABLE ONLY public.main_company DROP CONSTRAINT main_company_pkey;
+ALTER TABLE ONLY public.main_category DROP CONSTRAINT main_category_pkey;
+ALTER TABLE ONLY public.main_category DROP CONSTRAINT main_category_name_key;
+ALTER TABLE ONLY public.main_barcode DROP CONSTRAINT main_barcode_product_id_key;
+ALTER TABLE ONLY public.main_barcode DROP CONSTRAINT main_barcode_pkey;
+ALTER TABLE ONLY public.djcelery_workerstate DROP CONSTRAINT djcelery_workerstate_pkey;
+ALTER TABLE ONLY public.djcelery_workerstate DROP CONSTRAINT djcelery_workerstate_hostname_key;
+ALTER TABLE ONLY public.djcelery_taskstate DROP CONSTRAINT djcelery_taskstate_task_id_key;
+ALTER TABLE ONLY public.djcelery_taskstate DROP CONSTRAINT djcelery_taskstate_pkey;
+ALTER TABLE ONLY public.djcelery_periodictasks DROP CONSTRAINT djcelery_periodictasks_pkey;
+ALTER TABLE ONLY public.djcelery_periodictask DROP CONSTRAINT djcelery_periodictask_pkey;
+ALTER TABLE ONLY public.djcelery_periodictask DROP CONSTRAINT djcelery_periodictask_name_key;
+ALTER TABLE ONLY public.djcelery_intervalschedule DROP CONSTRAINT djcelery_intervalschedule_pkey;
+ALTER TABLE ONLY public.djcelery_crontabschedule DROP CONSTRAINT djcelery_crontabschedule_pkey;
+ALTER TABLE ONLY public.django_session DROP CONSTRAINT django_session_pkey;
+ALTER TABLE ONLY public.django_migrations DROP CONSTRAINT django_migrations_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq;
+ALTER TABLE ONLY public.django_celery_beat_solarschedule DROP CONSTRAINT django_celery_beat_solarschedule_pkey;
+ALTER TABLE ONLY public.django_celery_beat_solarschedule DROP CONSTRAINT django_celery_beat_solar_event_latitude_longitude_ba64999a_uniq;
+ALTER TABLE ONLY public.django_celery_beat_periodictasks DROP CONSTRAINT django_celery_beat_periodictasks_pkey;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_periodictask_pkey;
+ALTER TABLE ONLY public.django_celery_beat_periodictask DROP CONSTRAINT django_celery_beat_periodictask_name_key;
+ALTER TABLE ONLY public.django_celery_beat_intervalschedule DROP CONSTRAINT django_celery_beat_intervalschedule_pkey;
+ALTER TABLE ONLY public.django_celery_beat_crontabschedule DROP CONSTRAINT django_celery_beat_crontabschedule_pkey;
+ALTER TABLE ONLY public.django_celery_beat_clockedschedule DROP CONSTRAINT django_celery_beat_clockedschedule_pkey;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_pkey;
+ALTER TABLE ONLY public.celery_tasksetmeta DROP CONSTRAINT celery_tasksetmeta_taskset_id_key;
+ALTER TABLE ONLY public.celery_tasksetmeta DROP CONSTRAINT celery_tasksetmeta_pkey;
+ALTER TABLE ONLY public.celery_taskmeta DROP CONSTRAINT celery_taskmeta_task_id_key;
+ALTER TABLE ONLY public.celery_taskmeta DROP CONSTRAINT celery_taskmeta_pkey;
+ALTER TABLE ONLY public.background_task DROP CONSTRAINT background_task_pkey;
+ALTER TABLE ONLY public.background_task_completedtask DROP CONSTRAINT background_task_completedtask_pkey;
+ALTER TABLE ONLY public.auth_user DROP CONSTRAINT auth_user_username_key;
+ALTER TABLE ONLY public.auth_user_user_permissions DROP CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq;
+ALTER TABLE ONLY public.auth_user_user_permissions DROP CONSTRAINT auth_user_user_permissions_pkey;
+ALTER TABLE ONLY public.auth_user DROP CONSTRAINT auth_user_pkey;
+ALTER TABLE ONLY public.auth_user_groups DROP CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq;
+ALTER TABLE ONLY public.auth_user_groups DROP CONSTRAINT auth_user_groups_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_name_key;
+ALTER TABLE public.users_profile ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.main_producthistory ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.main_product ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.main_company ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.main_category ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.main_barcode ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.djcelery_workerstate ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.djcelery_taskstate ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.djcelery_periodictask ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.djcelery_intervalschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.djcelery_crontabschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_migrations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_content_type ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_celery_beat_solarschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_celery_beat_periodictask ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_celery_beat_intervalschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_celery_beat_crontabschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_celery_beat_clockedschedule ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_admin_log ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.celery_tasksetmeta ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.celery_taskmeta ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.background_task_completedtask ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.background_task ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_user_user_permissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_user_groups ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_user ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_permission ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group_permissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.users_profile_id_seq;
+DROP TABLE public.users_profile;
+DROP SEQUENCE public.main_producthistory_id_seq;
+DROP TABLE public.main_producthistory;
+DROP SEQUENCE public.main_product_id_seq;
+DROP TABLE public.main_product;
+DROP SEQUENCE public.main_company_id_seq;
+DROP TABLE public.main_company;
+DROP SEQUENCE public.main_category_id_seq;
+DROP TABLE public.main_category;
+DROP SEQUENCE public.main_barcode_id_seq;
+DROP TABLE public.main_barcode;
+DROP SEQUENCE public.djcelery_workerstate_id_seq;
+DROP TABLE public.djcelery_workerstate;
+DROP SEQUENCE public.djcelery_taskstate_id_seq;
+DROP TABLE public.djcelery_taskstate;
+DROP TABLE public.djcelery_periodictasks;
+DROP SEQUENCE public.djcelery_periodictask_id_seq;
+DROP TABLE public.djcelery_periodictask;
+DROP SEQUENCE public.djcelery_intervalschedule_id_seq;
+DROP TABLE public.djcelery_intervalschedule;
+DROP SEQUENCE public.djcelery_crontabschedule_id_seq;
+DROP TABLE public.djcelery_crontabschedule;
+DROP TABLE public.django_session;
+DROP SEQUENCE public.django_migrations_id_seq;
+DROP TABLE public.django_migrations;
+DROP SEQUENCE public.django_content_type_id_seq;
+DROP TABLE public.django_content_type;
+DROP SEQUENCE public.django_celery_beat_solarschedule_id_seq;
+DROP TABLE public.django_celery_beat_solarschedule;
+DROP TABLE public.django_celery_beat_periodictasks;
+DROP SEQUENCE public.django_celery_beat_periodictask_id_seq;
+DROP TABLE public.django_celery_beat_periodictask;
+DROP SEQUENCE public.django_celery_beat_intervalschedule_id_seq;
+DROP TABLE public.django_celery_beat_intervalschedule;
+DROP SEQUENCE public.django_celery_beat_crontabschedule_id_seq;
+DROP TABLE public.django_celery_beat_crontabschedule;
+DROP SEQUENCE public.django_celery_beat_clockedschedule_id_seq;
+DROP TABLE public.django_celery_beat_clockedschedule;
+DROP SEQUENCE public.django_admin_log_id_seq;
+DROP TABLE public.django_admin_log;
+DROP SEQUENCE public.celery_tasksetmeta_id_seq;
+DROP TABLE public.celery_tasksetmeta;
+DROP SEQUENCE public.celery_taskmeta_id_seq;
+DROP TABLE public.celery_taskmeta;
+DROP SEQUENCE public.background_task_id_seq;
+DROP SEQUENCE public.background_task_completedtask_id_seq;
+DROP TABLE public.background_task_completedtask;
+DROP TABLE public.background_task;
+DROP SEQUENCE public.auth_user_user_permissions_id_seq;
+DROP TABLE public.auth_user_user_permissions;
+DROP SEQUENCE public.auth_user_id_seq;
+DROP SEQUENCE public.auth_user_groups_id_seq;
+DROP TABLE public.auth_user_groups;
+DROP TABLE public.auth_user;
+DROP SEQUENCE public.auth_permission_id_seq;
+DROP TABLE public.auth_permission;
+DROP SEQUENCE public.auth_group_permissions_id_seq;
+DROP TABLE public.auth_group_permissions;
+DROP SEQUENCE public.auth_group_id_seq;
+DROP TABLE public.auth_group;
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(150) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO postgres;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: background_task; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.background_task (
+    id integer NOT NULL,
+    task_name character varying(190) NOT NULL,
+    task_params text NOT NULL,
+    task_hash character varying(40) NOT NULL,
+    verbose_name character varying(255),
+    priority integer NOT NULL,
+    run_at timestamp with time zone NOT NULL,
+    repeat bigint NOT NULL,
+    repeat_until timestamp with time zone,
+    queue character varying(190),
+    attempts integer NOT NULL,
+    failed_at timestamp with time zone,
+    last_error text NOT NULL,
+    locked_by character varying(64),
+    locked_at timestamp with time zone,
+    creator_object_id integer,
+    creator_content_type_id integer,
+    CONSTRAINT background_task_creator_object_id_check CHECK ((creator_object_id >= 0))
+);
+
+
+ALTER TABLE public.background_task OWNER TO postgres;
+
+--
+-- Name: background_task_completedtask; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.background_task_completedtask (
+    id integer NOT NULL,
+    task_name character varying(190) NOT NULL,
+    task_params text NOT NULL,
+    task_hash character varying(40) NOT NULL,
+    verbose_name character varying(255),
+    priority integer NOT NULL,
+    run_at timestamp with time zone NOT NULL,
+    repeat bigint NOT NULL,
+    repeat_until timestamp with time zone,
+    queue character varying(190),
+    attempts integer NOT NULL,
+    failed_at timestamp with time zone,
+    last_error text NOT NULL,
+    locked_by character varying(64),
+    locked_at timestamp with time zone,
+    creator_object_id integer,
+    creator_content_type_id integer,
+    CONSTRAINT background_task_completedtask_creator_object_id_check CHECK ((creator_object_id >= 0))
+);
+
+
+ALTER TABLE public.background_task_completedtask OWNER TO postgres;
+
+--
+-- Name: background_task_completedtask_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.background_task_completedtask_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.background_task_completedtask_id_seq OWNER TO postgres;
+
+--
+-- Name: background_task_completedtask_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.background_task_completedtask_id_seq OWNED BY public.background_task_completedtask.id;
+
+
+--
+-- Name: background_task_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.background_task_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.background_task_id_seq OWNER TO postgres;
+
+--
+-- Name: background_task_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.background_task_id_seq OWNED BY public.background_task.id;
+
+
+--
+-- Name: celery_taskmeta; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.celery_taskmeta (
+    id integer NOT NULL,
+    task_id character varying(255) NOT NULL,
+    status character varying(50) NOT NULL,
+    result text,
+    date_done timestamp with time zone NOT NULL,
+    traceback text,
+    hidden boolean NOT NULL,
+    meta text
+);
+
+
+ALTER TABLE public.celery_taskmeta OWNER TO postgres;
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.celery_taskmeta_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.celery_taskmeta_id_seq OWNER TO postgres;
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.celery_taskmeta_id_seq OWNED BY public.celery_taskmeta.id;
+
+
+--
+-- Name: celery_tasksetmeta; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.celery_tasksetmeta (
+    id integer NOT NULL,
+    taskset_id character varying(255) NOT NULL,
+    result text NOT NULL,
+    date_done timestamp with time zone NOT NULL,
+    hidden boolean NOT NULL
+);
+
+
+ALTER TABLE public.celery_tasksetmeta OWNER TO postgres;
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.celery_tasksetmeta_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.celery_tasksetmeta_id_seq OWNER TO postgres;
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.celery_tasksetmeta_id_seq OWNED BY public.celery_tasksetmeta.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_celery_beat_clockedschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_clockedschedule (
+    id integer NOT NULL,
+    clocked_time timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_celery_beat_clockedschedule OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_clockedschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_celery_beat_clockedschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_celery_beat_clockedschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_clockedschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_celery_beat_clockedschedule_id_seq OWNED BY public.django_celery_beat_clockedschedule.id;
+
+
+--
+-- Name: django_celery_beat_crontabschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_crontabschedule (
+    id integer NOT NULL,
+    minute character varying(240) NOT NULL,
+    hour character varying(96) NOT NULL,
+    day_of_week character varying(64) NOT NULL,
+    day_of_month character varying(124) NOT NULL,
+    month_of_year character varying(64) NOT NULL,
+    timezone character varying(63) NOT NULL
+);
+
+
+ALTER TABLE public.django_celery_beat_crontabschedule OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_crontabschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_celery_beat_crontabschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_celery_beat_crontabschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_crontabschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_celery_beat_crontabschedule_id_seq OWNED BY public.django_celery_beat_crontabschedule.id;
+
+
+--
+-- Name: django_celery_beat_intervalschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_intervalschedule (
+    id integer NOT NULL,
+    every integer NOT NULL,
+    period character varying(24) NOT NULL
+);
+
+
+ALTER TABLE public.django_celery_beat_intervalschedule OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_intervalschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_celery_beat_intervalschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_celery_beat_intervalschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_intervalschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_celery_beat_intervalschedule_id_seq OWNED BY public.django_celery_beat_intervalschedule.id;
+
+
+--
+-- Name: django_celery_beat_periodictask; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_periodictask (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    task character varying(200) NOT NULL,
+    args text NOT NULL,
+    kwargs text NOT NULL,
+    queue character varying(200),
+    exchange character varying(200),
+    routing_key character varying(200),
+    expires timestamp with time zone,
+    enabled boolean NOT NULL,
+    last_run_at timestamp with time zone,
+    total_run_count integer NOT NULL,
+    date_changed timestamp with time zone NOT NULL,
+    description text NOT NULL,
+    crontab_id integer,
+    interval_id integer,
+    solar_id integer,
+    one_off boolean NOT NULL,
+    start_time timestamp with time zone,
+    priority integer,
+    headers text NOT NULL,
+    clocked_id integer,
+    expire_seconds integer,
+    CONSTRAINT django_celery_beat_periodictask_expire_seconds_check CHECK ((expire_seconds >= 0)),
+    CONSTRAINT django_celery_beat_periodictask_priority_check CHECK ((priority >= 0)),
+    CONSTRAINT django_celery_beat_periodictask_total_run_count_check CHECK ((total_run_count >= 0))
+);
+
+
+ALTER TABLE public.django_celery_beat_periodictask OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_periodictask_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_celery_beat_periodictask_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_celery_beat_periodictask_id_seq OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_periodictask_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_celery_beat_periodictask_id_seq OWNED BY public.django_celery_beat_periodictask.id;
+
+
+--
+-- Name: django_celery_beat_periodictasks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_periodictasks (
+    ident smallint NOT NULL,
+    last_update timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_celery_beat_periodictasks OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_solarschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_celery_beat_solarschedule (
+    id integer NOT NULL,
+    event character varying(24) NOT NULL,
+    latitude numeric(9,6) NOT NULL,
+    longitude numeric(9,6) NOT NULL
+);
+
+
+ALTER TABLE public.django_celery_beat_solarschedule OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_solarschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_celery_beat_solarschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_celery_beat_solarschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: django_celery_beat_solarschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_celery_beat_solarschedule_id_seq OWNED BY public.django_celery_beat_solarschedule.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO postgres;
+
+--
+-- Name: djcelery_crontabschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_crontabschedule (
+    id integer NOT NULL,
+    minute character varying(64) NOT NULL,
+    hour character varying(64) NOT NULL,
+    day_of_week character varying(64) NOT NULL,
+    day_of_month character varying(64) NOT NULL,
+    month_of_year character varying(64) NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_crontabschedule OWNER TO postgres;
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.djcelery_crontabschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_crontabschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.djcelery_crontabschedule_id_seq OWNED BY public.djcelery_crontabschedule.id;
+
+
+--
+-- Name: djcelery_intervalschedule; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_intervalschedule (
+    id integer NOT NULL,
+    every integer NOT NULL,
+    period character varying(24) NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_intervalschedule OWNER TO postgres;
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.djcelery_intervalschedule_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_intervalschedule_id_seq OWNER TO postgres;
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.djcelery_intervalschedule_id_seq OWNED BY public.djcelery_intervalschedule.id;
+
+
+--
+-- Name: djcelery_periodictask; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_periodictask (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    task character varying(200) NOT NULL,
+    args text NOT NULL,
+    kwargs text NOT NULL,
+    queue character varying(200),
+    exchange character varying(200),
+    routing_key character varying(200),
+    expires timestamp with time zone,
+    enabled boolean NOT NULL,
+    last_run_at timestamp with time zone,
+    total_run_count integer NOT NULL,
+    date_changed timestamp with time zone NOT NULL,
+    description text NOT NULL,
+    crontab_id integer,
+    interval_id integer,
+    CONSTRAINT djcelery_periodictask_total_run_count_check CHECK ((total_run_count >= 0))
+);
+
+
+ALTER TABLE public.djcelery_periodictask OWNER TO postgres;
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.djcelery_periodictask_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_periodictask_id_seq OWNER TO postgres;
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.djcelery_periodictask_id_seq OWNED BY public.djcelery_periodictask.id;
+
+
+--
+-- Name: djcelery_periodictasks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_periodictasks (
+    ident smallint NOT NULL,
+    last_update timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_periodictasks OWNER TO postgres;
+
+--
+-- Name: djcelery_taskstate; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_taskstate (
+    id integer NOT NULL,
+    state character varying(64) NOT NULL,
+    task_id character varying(36) NOT NULL,
+    name character varying(200),
+    tstamp timestamp with time zone NOT NULL,
+    args text,
+    kwargs text,
+    eta timestamp with time zone,
+    expires timestamp with time zone,
+    result text,
+    traceback text,
+    runtime double precision,
+    retries integer NOT NULL,
+    hidden boolean NOT NULL,
+    worker_id integer
+);
+
+
+ALTER TABLE public.djcelery_taskstate OWNER TO postgres;
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.djcelery_taskstate_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_taskstate_id_seq OWNER TO postgres;
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.djcelery_taskstate_id_seq OWNED BY public.djcelery_taskstate.id;
+
+
+--
+-- Name: djcelery_workerstate; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.djcelery_workerstate (
+    id integer NOT NULL,
+    hostname character varying(255) NOT NULL,
+    last_heartbeat timestamp with time zone
+);
+
+
+ALTER TABLE public.djcelery_workerstate OWNER TO postgres;
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.djcelery_workerstate_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_workerstate_id_seq OWNER TO postgres;
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.djcelery_workerstate_id_seq OWNED BY public.djcelery_workerstate.id;
+
+
+--
+-- Name: main_barcode; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_barcode (
+    id integer NOT NULL,
+    barcode_digit character varying(13),
+    barcode_img character varying(100) NOT NULL,
+    company_id integer,
+    product_id integer NOT NULL
+);
+
+
+ALTER TABLE public.main_barcode OWNER TO postgres;
+
+--
+-- Name: main_barcode_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.main_barcode_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.main_barcode_id_seq OWNER TO postgres;
+
+--
+-- Name: main_barcode_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.main_barcode_id_seq OWNED BY public.main_barcode.id;
+
+
+--
+-- Name: main_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_category (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    created_at timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.main_category OWNER TO postgres;
+
+--
+-- Name: main_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.main_category_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.main_category_id_seq OWNER TO postgres;
+
+--
+-- Name: main_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.main_category_id_seq OWNED BY public.main_category.id;
+
+
+--
+-- Name: main_company; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_company (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    logo character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.main_company OWNER TO postgres;
+
+--
+-- Name: main_company_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.main_company_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.main_company_id_seq OWNER TO postgres;
+
+--
+-- Name: main_company_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.main_company_id_seq OWNED BY public.main_company.id;
+
+
+--
+-- Name: main_product; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_product (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    buying_price numeric(7,2),
+    unit_price numeric(7,2),
+    quantity integer,
+    received_quantity integer,
+    received_by character varying(50),
+    issued_quantity integer,
+    issued_by character varying(50),
+    issued_to character varying(50),
+    reorder_level integer,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    category_id integer,
+    created_by_id integer NOT NULL
+);
+
+
+ALTER TABLE public.main_product OWNER TO postgres;
+
+--
+-- Name: main_product_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.main_product_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.main_product_id_seq OWNER TO postgres;
+
+--
+-- Name: main_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.main_product_id_seq OWNED BY public.main_product.id;
+
+
+--
+-- Name: main_producthistory; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_producthistory (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    buying_price numeric(7,2),
+    unit_price numeric(7,2),
+    quantity integer,
+    received_quantity integer,
+    received_by character varying(50),
+    issued_quantity integer,
+    issued_by character varying(50),
+    issued_to character varying(50),
+    reorder_level integer,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    category_id integer,
+    created_by_id integer NOT NULL
+);
+
+
+ALTER TABLE public.main_producthistory OWNER TO postgres;
+
+--
+-- Name: main_producthistory_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.main_producthistory_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.main_producthistory_id_seq OWNER TO postgres;
+
+--
+-- Name: main_producthistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.main_producthistory_id_seq OWNED BY public.main_producthistory.id;
+
+
+--
+-- Name: users_profile; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users_profile (
+    id integer NOT NULL,
+    phone character varying(128) NOT NULL,
+    image character varying(100) NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.users_profile OWNER TO postgres;
+
+--
+-- Name: users_profile_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_profile_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_profile_id_seq OWNER TO postgres;
+
+--
+-- Name: users_profile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_profile_id_seq OWNED BY public.users_profile.id;
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: background_task id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task ALTER COLUMN id SET DEFAULT nextval('public.background_task_id_seq'::regclass);
+
+
+--
+-- Name: background_task_completedtask id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task_completedtask ALTER COLUMN id SET DEFAULT nextval('public.background_task_completedtask_id_seq'::regclass);
+
+
+--
+-- Name: celery_taskmeta id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_taskmeta ALTER COLUMN id SET DEFAULT nextval('public.celery_taskmeta_id_seq'::regclass);
+
+
+--
+-- Name: celery_tasksetmeta id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta ALTER COLUMN id SET DEFAULT nextval('public.celery_tasksetmeta_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_celery_beat_clockedschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_clockedschedule ALTER COLUMN id SET DEFAULT nextval('public.django_celery_beat_clockedschedule_id_seq'::regclass);
+
+
+--
+-- Name: django_celery_beat_crontabschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_crontabschedule ALTER COLUMN id SET DEFAULT nextval('public.django_celery_beat_crontabschedule_id_seq'::regclass);
+
+
+--
+-- Name: django_celery_beat_intervalschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_intervalschedule ALTER COLUMN id SET DEFAULT nextval('public.django_celery_beat_intervalschedule_id_seq'::regclass);
+
+
+--
+-- Name: django_celery_beat_periodictask id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask ALTER COLUMN id SET DEFAULT nextval('public.django_celery_beat_periodictask_id_seq'::regclass);
+
+
+--
+-- Name: django_celery_beat_solarschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_solarschedule ALTER COLUMN id SET DEFAULT nextval('public.django_celery_beat_solarschedule_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_crontabschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_crontabschedule ALTER COLUMN id SET DEFAULT nextval('public.djcelery_crontabschedule_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_intervalschedule id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_intervalschedule ALTER COLUMN id SET DEFAULT nextval('public.djcelery_intervalschedule_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_periodictask id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask ALTER COLUMN id SET DEFAULT nextval('public.djcelery_periodictask_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_taskstate id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate ALTER COLUMN id SET DEFAULT nextval('public.djcelery_taskstate_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_workerstate id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate ALTER COLUMN id SET DEFAULT nextval('public.djcelery_workerstate_id_seq'::regclass);
+
+
+--
+-- Name: main_barcode id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_barcode ALTER COLUMN id SET DEFAULT nextval('public.main_barcode_id_seq'::regclass);
+
+
+--
+-- Name: main_category id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_category ALTER COLUMN id SET DEFAULT nextval('public.main_category_id_seq'::regclass);
+
+
+--
+-- Name: main_company id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_company ALTER COLUMN id SET DEFAULT nextval('public.main_company_id_seq'::regclass);
+
+
+--
+-- Name: main_product id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_product ALTER COLUMN id SET DEFAULT nextval('public.main_product_id_seq'::regclass);
+
+
+--
+-- Name: main_producthistory id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_producthistory ALTER COLUMN id SET DEFAULT nextval('public.main_producthistory_id_seq'::regclass);
+
+
+--
+-- Name: users_profile id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_profile ALTER COLUMN id SET DEFAULT nextval('public.users_profile_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add crontab	1	add_crontabschedule
+2	Can change crontab	1	change_crontabschedule
+3	Can delete crontab	1	delete_crontabschedule
+4	Can view crontab	1	view_crontabschedule
+5	Can add interval	2	add_intervalschedule
+6	Can change interval	2	change_intervalschedule
+7	Can delete interval	2	delete_intervalschedule
+8	Can view interval	2	view_intervalschedule
+9	Can add periodic task	3	add_periodictask
+10	Can change periodic task	3	change_periodictask
+11	Can delete periodic task	3	delete_periodictask
+12	Can view periodic task	3	view_periodictask
+13	Can add periodic tasks	4	add_periodictasks
+14	Can change periodic tasks	4	change_periodictasks
+15	Can delete periodic tasks	4	delete_periodictasks
+16	Can view periodic tasks	4	view_periodictasks
+17	Can add task state	5	add_taskmeta
+18	Can change task state	5	change_taskmeta
+19	Can delete task state	5	delete_taskmeta
+20	Can view task state	5	view_taskmeta
+21	Can add saved group result	6	add_tasksetmeta
+22	Can change saved group result	6	change_tasksetmeta
+23	Can delete saved group result	6	delete_tasksetmeta
+24	Can view saved group result	6	view_tasksetmeta
+25	Can add task	7	add_taskstate
+26	Can change task	7	change_taskstate
+27	Can delete task	7	delete_taskstate
+28	Can view task	7	view_taskstate
+29	Can add worker	8	add_workerstate
+30	Can change worker	8	change_workerstate
+31	Can delete worker	8	delete_workerstate
+32	Can view worker	8	view_workerstate
+33	Can add log entry	9	add_logentry
+34	Can change log entry	9	change_logentry
+35	Can delete log entry	9	delete_logentry
+36	Can view log entry	9	view_logentry
+37	Can add permission	10	add_permission
+38	Can change permission	10	change_permission
+39	Can delete permission	10	delete_permission
+40	Can view permission	10	view_permission
+41	Can add group	11	add_group
+42	Can change group	11	change_group
+43	Can delete group	11	delete_group
+44	Can view group	11	view_group
+45	Can add user	12	add_user
+46	Can change user	12	change_user
+47	Can delete user	12	delete_user
+48	Can view user	12	view_user
+49	Can add content type	13	add_contenttype
+50	Can change content type	13	change_contenttype
+51	Can delete content type	13	delete_contenttype
+52	Can view content type	13	view_contenttype
+53	Can add session	14	add_session
+54	Can change session	14	change_session
+55	Can delete session	14	delete_session
+56	Can view session	14	view_session
+57	Can add product	15	add_product
+58	Can change product	15	change_product
+59	Can delete product	15	delete_product
+60	Can view product	15	view_product
+61	Can add barcode	16	add_barcode
+62	Can change barcode	16	change_barcode
+63	Can delete barcode	16	delete_barcode
+64	Can view barcode	16	view_barcode
+65	Can add product history	17	add_producthistory
+66	Can change product history	17	change_producthistory
+67	Can delete product history	17	delete_producthistory
+68	Can view product history	17	view_producthistory
+69	Can add company	18	add_company
+70	Can change company	18	change_company
+71	Can delete company	18	delete_company
+72	Can view company	18	view_company
+73	Can add category	19	add_category
+74	Can change category	19	change_category
+75	Can delete category	19	delete_category
+76	Can view category	19	view_category
+77	Can add profile	20	add_profile
+78	Can change profile	20	change_profile
+79	Can delete profile	20	delete_profile
+80	Can view profile	20	view_profile
+81	Can add completed task	21	add_completedtask
+82	Can change completed task	21	change_completedtask
+83	Can delete completed task	21	delete_completedtask
+84	Can view completed task	21	view_completedtask
+85	Can add task	22	add_task
+86	Can change task	22	change_task
+87	Can delete task	22	delete_task
+88	Can view task	22	view_task
+89	Can add crontab	23	add_crontabschedule
+90	Can change crontab	23	change_crontabschedule
+91	Can delete crontab	23	delete_crontabschedule
+92	Can view crontab	23	view_crontabschedule
+93	Can add interval	24	add_intervalschedule
+94	Can change interval	24	change_intervalschedule
+95	Can delete interval	24	delete_intervalschedule
+96	Can view interval	24	view_intervalschedule
+97	Can add periodic task	25	add_periodictask
+98	Can change periodic task	25	change_periodictask
+99	Can delete periodic task	25	delete_periodictask
+100	Can view periodic task	25	view_periodictask
+101	Can add periodic tasks	26	add_periodictasks
+102	Can change periodic tasks	26	change_periodictasks
+103	Can delete periodic tasks	26	delete_periodictasks
+104	Can view periodic tasks	26	view_periodictasks
+105	Can add solar event	27	add_solarschedule
+106	Can change solar event	27	change_solarschedule
+107	Can delete solar event	27	delete_solarschedule
+108	Can view solar event	27	view_solarschedule
+109	Can add clocked	28	add_clockedschedule
+110	Can change clocked	28	change_clockedschedule
+111	Can delete clocked	28	delete_clockedschedule
+112	Can view clocked	28	view_clockedschedule
+\.
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$216000$XHhwqmXCBVMN$F4jpmXAnv9FdR/erCDDXP+u2pkd1TimLeZTSROcJHoc=	2021-04-10 16:26:30.706512+00	t	fouad			fafopalermo@gmail.com	t	t	2021-04-10 14:48:26.169623+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: background_task; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.background_task (id, task_name, task_params, task_hash, verbose_name, priority, run_at, repeat, repeat_until, queue, attempts, failed_at, last_error, locked_by, locked_at, creator_object_id, creator_content_type_id) FROM stdin;
+9	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:10:33.862677+00	60	\N	\N	0	\N		\N	\N	\N	\N
+10	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:10:44.097265+00	60	\N	\N	0	\N		\N	\N	\N	\N
+11	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:10:55.525869+00	60	\N	\N	0	\N		\N	\N	\N	\N
+12	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:11:41.123079+00	60	\N	\N	0	\N		\N	\N	\N	\N
+13	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:12:33.191284+00	60	\N	\N	0	\N		\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: background_task_completedtask; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.background_task_completedtask (id, task_name, task_params, task_hash, verbose_name, priority, run_at, repeat, repeat_until, queue, attempts, failed_at, last_error, locked_by, locked_at, creator_object_id, creator_content_type_id) FROM stdin;
+1	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:06:46.545257+00	60	\N	\N	1	\N		16564	2021-04-10 15:06:46.52991+00	\N	\N
+2	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:06:56.911154+00	60	\N	\N	1	\N		16564	2021-04-10 15:06:56.905152+00	\N	\N
+3	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:07:47.752345+00	60	\N	\N	1	\N		16564	2021-04-10 15:07:47.744127+00	\N	\N
+4	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:07:57.941791+00	60	\N	\N	1	\N		16564	2021-04-10 15:07:57.928368+00	\N	\N
+5	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:08:48.811927+00	60	\N	\N	1	\N		16564	2021-04-10 15:08:48.804957+00	\N	\N
+6	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:08:59.161749+00	60	\N	\N	1	\N		16564	2021-04-10 15:08:59.147356+00	\N	\N
+7	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:09:45.029327+00	60	\N	\N	1	\N		16564	2021-04-10 15:09:45.019754+00	\N	\N
+8	main.utils.notify_user	[[], {}]	9906eb1dba86c298c18a34ffa7b239f3fd538b84	\N	0	2021-04-10 15:10:00.294335+00	60	\N	\N	1	\N		16564	2021-04-10 15:10:00.281581+00	\N	\N
+\.
+
+
+--
+-- Data for Name: celery_taskmeta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.celery_taskmeta (id, task_id, status, result, date_done, traceback, hidden, meta) FROM stdin;
+\.
+
+
+--
+-- Data for Name: celery_tasksetmeta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.celery_tasksetmeta (id, taskset_id, result, date_done, hidden) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2021-04-10 16:28:00.38575+00	1	every 5 seconds	1	[{"added": {}}]	24	1
+2	2021-04-10 16:28:40.519373+00	1	NewTask: every 5 seconds	1	[{"added": {}}]	25	1
+3	2021-04-10 16:41:32.1002+00	1	NewTask: every 5 seconds	3		25	1
+4	2021-04-10 16:45:24.965652+00	1	0 4 * * * (m/h/dM/MY/d) UTC	3		23	1
+5	2021-04-10 16:52:50.471017+00	2	every minute	1	[{"added": {}}]	24	1
+6	2021-04-10 16:52:55.793366+00	4	my_backup: every minute	1	[{"added": {}}]	25	1
+\.
+
+
+--
+-- Data for Name: django_celery_beat_clockedschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_clockedschedule (id, clocked_time) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_celery_beat_crontabschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_crontabschedule (id, minute, hour, day_of_week, day_of_month, month_of_year, timezone) FROM stdin;
+2	0	4	*	*	*	UTC
+\.
+
+
+--
+-- Data for Name: django_celery_beat_intervalschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_intervalschedule (id, every, period) FROM stdin;
+1	5	seconds
+2	1	minutes
+\.
+
+
+--
+-- Data for Name: django_celery_beat_periodictask; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description, crontab_id, interval_id, solar_id, one_off, start_time, priority, headers, clocked_id, expire_seconds) FROM stdin;
+3	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	\N	0	2021-04-10 17:21:17.745217+00		2	\N	\N	f	\N	\N	{}	\N	43200
+4	my_backup	main.tasks.my_backup	[]	{}	\N	\N	\N	\N	t	2021-04-10 17:25:20.367517+00	12	2021-04-10 17:25:54.586368+00		\N	2	\N	f	2021-04-10 16:52:53+00	\N	{}	\N	\N
+\.
+
+
+--
+-- Data for Name: django_celery_beat_periodictasks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_periodictasks (ident, last_update) FROM stdin;
+1	2021-04-10 17:21:17.743217+00
+\.
+
+
+--
+-- Data for Name: django_celery_beat_solarschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_celery_beat_solarschedule (id, event, latitude, longitude) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	djcelery	crontabschedule
+2	djcelery	intervalschedule
+3	djcelery	periodictask
+4	djcelery	periodictasks
+5	djcelery	taskmeta
+6	djcelery	tasksetmeta
+7	djcelery	taskstate
+8	djcelery	workerstate
+9	admin	logentry
+10	auth	permission
+11	auth	group
+12	auth	user
+13	contenttypes	contenttype
+14	sessions	session
+15	main	product
+16	main	barcode
+17	main	producthistory
+18	main	company
+19	main	category
+20	users	profile
+21	background_task	completedtask
+22	background_task	task
+23	django_celery_beat	crontabschedule
+24	django_celery_beat	intervalschedule
+25	django_celery_beat	periodictask
+26	django_celery_beat	periodictasks
+27	django_celery_beat	solarschedule
+28	django_celery_beat	clockedschedule
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2021-04-10 14:47:54.643875+00
+2	auth	0001_initial	2021-04-10 14:47:54.713145+00
+3	admin	0001_initial	2021-04-10 14:47:54.79915+00
+4	admin	0002_logentry_remove_auto_add	2021-04-10 14:47:54.819143+00
+5	admin	0003_logentry_add_action_flag_choices	2021-04-10 14:47:54.830174+00
+6	contenttypes	0002_remove_content_type_name	2021-04-10 14:47:54.852173+00
+7	auth	0002_alter_permission_name_max_length	2021-04-10 14:47:54.864173+00
+8	auth	0003_alter_user_email_max_length	2021-04-10 14:47:54.900173+00
+9	auth	0004_alter_user_username_opts	2021-04-10 14:47:54.913173+00
+10	auth	0005_alter_user_last_login_null	2021-04-10 14:47:54.924173+00
+11	auth	0006_require_contenttypes_0002	2021-04-10 14:47:54.927173+00
+12	auth	0007_alter_validators_add_error_messages	2021-04-10 14:47:54.938144+00
+13	auth	0008_alter_user_username_max_length	2021-04-10 14:47:54.965189+00
+14	auth	0009_alter_user_last_name_max_length	2021-04-10 14:47:54.975173+00
+15	auth	0010_alter_group_name_max_length	2021-04-10 14:47:54.989174+00
+16	auth	0011_update_proxy_permissions	2021-04-10 14:47:55.002206+00
+17	auth	0012_alter_user_first_name_max_length	2021-04-10 14:47:55.015673+00
+18	djcelery	0001_initial	2021-04-10 14:47:55.108672+00
+19	sessions	0001_initial	2021-04-10 14:47:55.180843+00
+20	main	0001_initial	2021-04-10 14:48:09.895391+00
+21	users	0001_initial	2021-04-10 14:48:09.989234+00
+22	background_task	0001_initial	2021-04-10 15:01:44.678923+00
+23	background_task	0002_auto_20170927_1109	2021-04-10 15:01:44.797927+00
+24	django_celery_beat	0001_initial	2021-04-10 16:25:51.048419+00
+25	django_celery_beat	0002_auto_20161118_0346	2021-04-10 16:25:51.086335+00
+26	django_celery_beat	0003_auto_20161209_0049	2021-04-10 16:25:51.103037+00
+27	django_celery_beat	0004_auto_20170221_0000	2021-04-10 16:25:51.109067+00
+28	django_celery_beat	0005_add_solarschedule_events_choices	2021-04-10 16:25:51.115066+00
+29	django_celery_beat	0006_auto_20180322_0932	2021-04-10 16:25:51.147036+00
+30	django_celery_beat	0007_auto_20180521_0826	2021-04-10 16:25:51.167565+00
+31	django_celery_beat	0008_auto_20180914_1922	2021-04-10 16:25:51.191831+00
+32	django_celery_beat	0006_auto_20180210_1226	2021-04-10 16:25:51.209831+00
+33	django_celery_beat	0006_periodictask_priority	2021-04-10 16:25:51.218832+00
+34	django_celery_beat	0009_periodictask_headers	2021-04-10 16:25:51.228801+00
+35	django_celery_beat	0010_auto_20190429_0326	2021-04-10 16:25:51.467813+00
+36	django_celery_beat	0011_auto_20190508_0153	2021-04-10 16:25:51.488831+00
+37	django_celery_beat	0012_periodictask_expire_seconds	2021-04-10 16:25:51.502833+00
+38	django_celery_beat	0013_auto_20200609_0727	2021-04-10 16:25:51.50982+00
+39	django_celery_beat	0014_remove_clockedschedule_enabled	2021-04-10 16:25:51.517805+00
+40	django_celery_beat	0015_edit_solarschedule_events_choices	2021-04-10 16:25:51.523832+00
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+pflv0t38ke1lvjmxwoztbwv3hhu9dipa	.eJxVjDsOwjAQBe_iGln-x6Gkzxms9XqNA8iW4qRC3J1ESgHtzLz3ZgG2tYSt0xLmxK5Msssvi4BPqodID6j3xrHVdZkjPxJ-2s6nluh1O9u_gwK97GuRPZJ0QhoPgIgm0k6ys6MDjDJ7DTEp650wlsQoBjBaK6e8TIMmZ9nnC_ymN8w:1lVGRK:76sY1NM6fNkTpTNevLqp5wDAW6_BH3YB4Q3miiInXCk	2021-04-24 16:26:30.735893+00
+\.
+
+
+--
+-- Data for Name: djcelery_crontabschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_crontabschedule (id, minute, hour, day_of_week, day_of_month, month_of_year) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_intervalschedule; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_intervalschedule (id, every, period) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_periodictask; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_periodictask (id, name, task, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description, crontab_id, interval_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_periodictasks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_periodictasks (ident, last_update) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_taskstate; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_taskstate (id, state, task_id, name, tstamp, args, kwargs, eta, expires, result, traceback, runtime, retries, hidden, worker_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_workerstate; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.djcelery_workerstate (id, hostname, last_heartbeat) FROM stdin;
+\.
+
+
+--
+-- Data for Name: main_barcode; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.main_barcode (id, barcode_digit, barcode_img, company_id, product_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: main_category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.main_category (id, name, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: main_company; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.main_company (id, name, logo) FROM stdin;
+\.
+
+
+--
+-- Data for Name: main_product; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.main_product (id, name, buying_price, unit_price, quantity, received_quantity, received_by, issued_quantity, issued_by, issued_to, reorder_level, created_at, updated_at, category_id, created_by_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: main_producthistory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.main_producthistory (id, name, buying_price, unit_price, quantity, received_quantity, received_by, issued_quantity, issued_by, issued_to, reorder_level, created_at, updated_at, category_id, created_by_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users_profile; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users_profile (id, phone, image, user_id) FROM stdin;
+1		default.jpg	1
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 112, true);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 1, true);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: background_task_completedtask_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.background_task_completedtask_id_seq', 8, true);
+
+
+--
+-- Name: background_task_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.background_task_id_seq', 13, true);
+
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.celery_taskmeta_id_seq', 1, false);
+
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.celery_tasksetmeta_id_seq', 1, false);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 6, true);
+
+
+--
+-- Name: django_celery_beat_clockedschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_celery_beat_clockedschedule_id_seq', 1, false);
+
+
+--
+-- Name: django_celery_beat_crontabschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_celery_beat_crontabschedule_id_seq', 2, true);
+
+
+--
+-- Name: django_celery_beat_intervalschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_celery_beat_intervalschedule_id_seq', 2, true);
+
+
+--
+-- Name: django_celery_beat_periodictask_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_celery_beat_periodictask_id_seq', 4, true);
+
+
+--
+-- Name: django_celery_beat_solarschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_celery_beat_solarschedule_id_seq', 1, false);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 28, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 40, true);
+
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.djcelery_crontabschedule_id_seq', 1, false);
+
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.djcelery_intervalschedule_id_seq', 1, false);
+
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.djcelery_periodictask_id_seq', 1, false);
+
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.djcelery_taskstate_id_seq', 1, false);
+
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.djcelery_workerstate_id_seq', 1, false);
+
+
+--
+-- Name: main_barcode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.main_barcode_id_seq', 1, false);
+
+
+--
+-- Name: main_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.main_category_id_seq', 1, false);
+
+
+--
+-- Name: main_company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.main_company_id_seq', 1, false);
+
+
+--
+-- Name: main_product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.main_product_id_seq', 1, false);
+
+
+--
+-- Name: main_producthistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.main_producthistory_id_seq', 1, false);
+
+
+--
+-- Name: users_profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_profile_id_seq', 1, true);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: background_task_completedtask background_task_completedtask_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task_completedtask
+    ADD CONSTRAINT background_task_completedtask_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: background_task background_task_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task
+    ADD CONSTRAINT background_task_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: celery_taskmeta celery_taskmeta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_taskmeta
+    ADD CONSTRAINT celery_taskmeta_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: celery_taskmeta celery_taskmeta_task_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_taskmeta
+    ADD CONSTRAINT celery_taskmeta_task_id_key UNIQUE (task_id);
+
+
+--
+-- Name: celery_tasksetmeta celery_tasksetmeta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta
+    ADD CONSTRAINT celery_tasksetmeta_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: celery_tasksetmeta celery_tasksetmeta_taskset_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta
+    ADD CONSTRAINT celery_tasksetmeta_taskset_id_key UNIQUE (taskset_id);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_celery_beat_clockedschedule django_celery_beat_clockedschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_clockedschedule
+    ADD CONSTRAINT django_celery_beat_clockedschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_celery_beat_crontabschedule django_celery_beat_crontabschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_crontabschedule
+    ADD CONSTRAINT django_celery_beat_crontabschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_celery_beat_intervalschedule django_celery_beat_intervalschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_intervalschedule
+    ADD CONSTRAINT django_celery_beat_intervalschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_periodictask_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_periodictask_name_key UNIQUE (name);
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_periodictask_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_periodictask_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_celery_beat_periodictasks django_celery_beat_periodictasks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictasks
+    ADD CONSTRAINT django_celery_beat_periodictasks_pkey PRIMARY KEY (ident);
+
+
+--
+-- Name: django_celery_beat_solarschedule django_celery_beat_solar_event_latitude_longitude_ba64999a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_solarschedule
+    ADD CONSTRAINT django_celery_beat_solar_event_latitude_longitude_ba64999a_uniq UNIQUE (event, latitude, longitude);
+
+
+--
+-- Name: django_celery_beat_solarschedule django_celery_beat_solarschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_solarschedule
+    ADD CONSTRAINT django_celery_beat_solarschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: djcelery_crontabschedule djcelery_crontabschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_crontabschedule
+    ADD CONSTRAINT djcelery_crontabschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_intervalschedule djcelery_intervalschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_intervalschedule
+    ADD CONSTRAINT djcelery_intervalschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictask_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictask_name_key UNIQUE (name);
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictask_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictask_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_periodictasks djcelery_periodictasks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictasks
+    ADD CONSTRAINT djcelery_periodictasks_pkey PRIMARY KEY (ident);
+
+
+--
+-- Name: djcelery_taskstate djcelery_taskstate_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery_taskstate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_taskstate djcelery_taskstate_task_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery_taskstate_task_id_key UNIQUE (task_id);
+
+
+--
+-- Name: djcelery_workerstate djcelery_workerstate_hostname_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate
+    ADD CONSTRAINT djcelery_workerstate_hostname_key UNIQUE (hostname);
+
+
+--
+-- Name: djcelery_workerstate djcelery_workerstate_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate
+    ADD CONSTRAINT djcelery_workerstate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: main_barcode main_barcode_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_barcode
+    ADD CONSTRAINT main_barcode_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: main_barcode main_barcode_product_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_barcode
+    ADD CONSTRAINT main_barcode_product_id_key UNIQUE (product_id);
+
+
+--
+-- Name: main_category main_category_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_category
+    ADD CONSTRAINT main_category_name_key UNIQUE (name);
+
+
+--
+-- Name: main_category main_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_category
+    ADD CONSTRAINT main_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: main_company main_company_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_company
+    ADD CONSTRAINT main_company_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: main_product main_product_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_product
+    ADD CONSTRAINT main_product_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: main_producthistory main_producthistory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_producthistory
+    ADD CONSTRAINT main_producthistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_profile users_profile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_profile
+    ADD CONSTRAINT users_profile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_profile users_profile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_profile
+    ADD CONSTRAINT users_profile_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: background_task_attempts_a9ade23d; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_attempts_a9ade23d ON public.background_task USING btree (attempts);
+
+
+--
+-- Name: background_task_completedtask_attempts_772a6783; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_attempts_772a6783 ON public.background_task_completedtask USING btree (attempts);
+
+
+--
+-- Name: background_task_completedtask_creator_content_type_id_21d6a741; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_creator_content_type_id_21d6a741 ON public.background_task_completedtask USING btree (creator_content_type_id);
+
+
+--
+-- Name: background_task_completedtask_failed_at_3de56618; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_failed_at_3de56618 ON public.background_task_completedtask USING btree (failed_at);
+
+
+--
+-- Name: background_task_completedtask_locked_at_29c62708; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_locked_at_29c62708 ON public.background_task_completedtask USING btree (locked_at);
+
+
+--
+-- Name: background_task_completedtask_locked_by_edc8a213; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_locked_by_edc8a213 ON public.background_task_completedtask USING btree (locked_by);
+
+
+--
+-- Name: background_task_completedtask_locked_by_edc8a213_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_locked_by_edc8a213_like ON public.background_task_completedtask USING btree (locked_by varchar_pattern_ops);
+
+
+--
+-- Name: background_task_completedtask_priority_9080692e; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_priority_9080692e ON public.background_task_completedtask USING btree (priority);
+
+
+--
+-- Name: background_task_completedtask_queue_61fb0415; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_queue_61fb0415 ON public.background_task_completedtask USING btree (queue);
+
+
+--
+-- Name: background_task_completedtask_queue_61fb0415_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_queue_61fb0415_like ON public.background_task_completedtask USING btree (queue varchar_pattern_ops);
+
+
+--
+-- Name: background_task_completedtask_run_at_77c80f34; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_run_at_77c80f34 ON public.background_task_completedtask USING btree (run_at);
+
+
+--
+-- Name: background_task_completedtask_task_hash_91187576; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_task_hash_91187576 ON public.background_task_completedtask USING btree (task_hash);
+
+
+--
+-- Name: background_task_completedtask_task_hash_91187576_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_task_hash_91187576_like ON public.background_task_completedtask USING btree (task_hash varchar_pattern_ops);
+
+
+--
+-- Name: background_task_completedtask_task_name_388dabc2; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_task_name_388dabc2 ON public.background_task_completedtask USING btree (task_name);
+
+
+--
+-- Name: background_task_completedtask_task_name_388dabc2_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_completedtask_task_name_388dabc2_like ON public.background_task_completedtask USING btree (task_name varchar_pattern_ops);
+
+
+--
+-- Name: background_task_creator_content_type_id_61cc9af3; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_creator_content_type_id_61cc9af3 ON public.background_task USING btree (creator_content_type_id);
+
+
+--
+-- Name: background_task_failed_at_b81bba14; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_failed_at_b81bba14 ON public.background_task USING btree (failed_at);
+
+
+--
+-- Name: background_task_locked_at_0fb0f225; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_locked_at_0fb0f225 ON public.background_task USING btree (locked_at);
+
+
+--
+-- Name: background_task_locked_by_db7779e3; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_locked_by_db7779e3 ON public.background_task USING btree (locked_by);
+
+
+--
+-- Name: background_task_locked_by_db7779e3_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_locked_by_db7779e3_like ON public.background_task USING btree (locked_by varchar_pattern_ops);
+
+
+--
+-- Name: background_task_priority_88bdbce9; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_priority_88bdbce9 ON public.background_task USING btree (priority);
+
+
+--
+-- Name: background_task_queue_1d5f3a40; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_queue_1d5f3a40 ON public.background_task USING btree (queue);
+
+
+--
+-- Name: background_task_queue_1d5f3a40_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_queue_1d5f3a40_like ON public.background_task USING btree (queue varchar_pattern_ops);
+
+
+--
+-- Name: background_task_run_at_7baca3aa; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_run_at_7baca3aa ON public.background_task USING btree (run_at);
+
+
+--
+-- Name: background_task_task_hash_d8f233bd; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_task_hash_d8f233bd ON public.background_task USING btree (task_hash);
+
+
+--
+-- Name: background_task_task_hash_d8f233bd_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_task_hash_d8f233bd_like ON public.background_task USING btree (task_hash varchar_pattern_ops);
+
+
+--
+-- Name: background_task_task_name_4562d56a; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_task_name_4562d56a ON public.background_task USING btree (task_name);
+
+
+--
+-- Name: background_task_task_name_4562d56a_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX background_task_task_name_4562d56a_like ON public.background_task USING btree (task_name varchar_pattern_ops);
+
+
+--
+-- Name: celery_taskmeta_hidden_23fd02dc; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX celery_taskmeta_hidden_23fd02dc ON public.celery_taskmeta USING btree (hidden);
+
+
+--
+-- Name: celery_taskmeta_task_id_9558b198_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX celery_taskmeta_task_id_9558b198_like ON public.celery_taskmeta USING btree (task_id varchar_pattern_ops);
+
+
+--
+-- Name: celery_tasksetmeta_hidden_593cfc24; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX celery_tasksetmeta_hidden_593cfc24 ON public.celery_tasksetmeta USING btree (hidden);
+
+
+--
+-- Name: celery_tasksetmeta_taskset_id_a5a1d4ae_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX celery_tasksetmeta_taskset_id_a5a1d4ae_like ON public.celery_tasksetmeta USING btree (taskset_id varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_celery_beat_periodictask_clocked_id_47a69f82; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_celery_beat_periodictask_clocked_id_47a69f82 ON public.django_celery_beat_periodictask USING btree (clocked_id);
+
+
+--
+-- Name: django_celery_beat_periodictask_crontab_id_d3cba168; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_celery_beat_periodictask_crontab_id_d3cba168 ON public.django_celery_beat_periodictask USING btree (crontab_id);
+
+
+--
+-- Name: django_celery_beat_periodictask_interval_id_a8ca27da; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_celery_beat_periodictask_interval_id_a8ca27da ON public.django_celery_beat_periodictask USING btree (interval_id);
+
+
+--
+-- Name: django_celery_beat_periodictask_name_265a36b7_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_celery_beat_periodictask_name_265a36b7_like ON public.django_celery_beat_periodictask USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: django_celery_beat_periodictask_solar_id_a87ce72c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_celery_beat_periodictask_solar_id_a87ce72c ON public.django_celery_beat_periodictask USING btree (solar_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_periodictask_crontab_id_75609bab; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_periodictask_crontab_id_75609bab ON public.djcelery_periodictask USING btree (crontab_id);
+
+
+--
+-- Name: djcelery_periodictask_interval_id_b426ab02; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_periodictask_interval_id_b426ab02 ON public.djcelery_periodictask USING btree (interval_id);
+
+
+--
+-- Name: djcelery_periodictask_name_cb62cda9_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_periodictask_name_cb62cda9_like ON public.djcelery_periodictask USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_hidden_c3905e57; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_hidden_c3905e57 ON public.djcelery_taskstate USING btree (hidden);
+
+
+--
+-- Name: djcelery_taskstate_name_8af9eded; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_name_8af9eded ON public.djcelery_taskstate USING btree (name);
+
+
+--
+-- Name: djcelery_taskstate_name_8af9eded_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_name_8af9eded_like ON public.djcelery_taskstate USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_state_53543be4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_state_53543be4 ON public.djcelery_taskstate USING btree (state);
+
+
+--
+-- Name: djcelery_taskstate_state_53543be4_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_state_53543be4_like ON public.djcelery_taskstate USING btree (state varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_task_id_9d2efdb5_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_task_id_9d2efdb5_like ON public.djcelery_taskstate USING btree (task_id varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_tstamp_4c3f93a1; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_tstamp_4c3f93a1 ON public.djcelery_taskstate USING btree (tstamp);
+
+
+--
+-- Name: djcelery_taskstate_worker_id_f7f57a05; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_taskstate_worker_id_f7f57a05 ON public.djcelery_taskstate USING btree (worker_id);
+
+
+--
+-- Name: djcelery_workerstate_hostname_b31c7fab_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_workerstate_hostname_b31c7fab_like ON public.djcelery_workerstate USING btree (hostname varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_workerstate_last_heartbeat_4539b544; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX djcelery_workerstate_last_heartbeat_4539b544 ON public.djcelery_workerstate USING btree (last_heartbeat);
+
+
+--
+-- Name: main_barcode_company_id_a16d03b9; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_barcode_company_id_a16d03b9 ON public.main_barcode USING btree (company_id);
+
+
+--
+-- Name: main_category_name_eb0f0831_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_category_name_eb0f0831_like ON public.main_category USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: main_product_category_id_c0d90f41; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_product_category_id_c0d90f41 ON public.main_product USING btree (category_id);
+
+
+--
+-- Name: main_product_created_by_id_226a58c0; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_product_created_by_id_226a58c0 ON public.main_product USING btree (created_by_id);
+
+
+--
+-- Name: main_producthistory_category_id_2527e14f; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_producthistory_category_id_2527e14f ON public.main_producthistory USING btree (category_id);
+
+
+--
+-- Name: main_producthistory_created_by_id_23d7c449; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX main_producthistory_created_by_id_23d7c449 ON public.main_producthistory USING btree (created_by_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: background_task_completedtask background_task_comp_creator_content_type_21d6a741_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task_completedtask
+    ADD CONSTRAINT background_task_comp_creator_content_type_21d6a741_fk_django_co FOREIGN KEY (creator_content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: background_task background_task_creator_content_type_61cc9af3_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.background_task
+    ADD CONSTRAINT background_task_creator_content_type_61cc9af3_fk_django_co FOREIGN KEY (creator_content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_p_clocked_id_47a69f82_fk_django_ce; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_p_clocked_id_47a69f82_fk_django_ce FOREIGN KEY (clocked_id) REFERENCES public.django_celery_beat_clockedschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_p_crontab_id_d3cba168_fk_django_ce; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_p_crontab_id_d3cba168_fk_django_ce FOREIGN KEY (crontab_id) REFERENCES public.django_celery_beat_crontabschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_p_interval_id_a8ca27da_fk_django_ce; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_p_interval_id_a8ca27da_fk_django_ce FOREIGN KEY (interval_id) REFERENCES public.django_celery_beat_intervalschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_celery_beat_periodictask django_celery_beat_p_solar_id_a87ce72c_fk_django_ce; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_celery_beat_periodictask
+    ADD CONSTRAINT django_celery_beat_p_solar_id_a87ce72c_fk_django_ce FOREIGN KEY (solar_id) REFERENCES public.django_celery_beat_solarschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictas_crontab_id_75609bab_fk_djcelery_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictas_crontab_id_75609bab_fk_djcelery_ FOREIGN KEY (crontab_id) REFERENCES public.djcelery_crontabschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictas_interval_id_b426ab02_fk_djcelery_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictas_interval_id_b426ab02_fk_djcelery_ FOREIGN KEY (interval_id) REFERENCES public.djcelery_intervalschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_taskstate djcelery_taskstate_worker_id_f7f57a05_fk_djcelery_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery_taskstate_worker_id_f7f57a05_fk_djcelery_ FOREIGN KEY (worker_id) REFERENCES public.djcelery_workerstate(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_barcode main_barcode_company_id_a16d03b9_fk_main_company_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_barcode
+    ADD CONSTRAINT main_barcode_company_id_a16d03b9_fk_main_company_id FOREIGN KEY (company_id) REFERENCES public.main_company(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_barcode main_barcode_product_id_0dddc446_fk_main_product_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_barcode
+    ADD CONSTRAINT main_barcode_product_id_0dddc446_fk_main_product_id FOREIGN KEY (product_id) REFERENCES public.main_product(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_product main_product_category_id_c0d90f41_fk_main_category_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_product
+    ADD CONSTRAINT main_product_category_id_c0d90f41_fk_main_category_id FOREIGN KEY (category_id) REFERENCES public.main_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_product main_product_created_by_id_226a58c0_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_product
+    ADD CONSTRAINT main_product_created_by_id_226a58c0_fk_auth_user_id FOREIGN KEY (created_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_producthistory main_producthistory_category_id_2527e14f_fk_main_category_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_producthistory
+    ADD CONSTRAINT main_producthistory_category_id_2527e14f_fk_main_category_id FOREIGN KEY (category_id) REFERENCES public.main_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: main_producthistory main_producthistory_created_by_id_23d7c449_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.main_producthistory
+    ADD CONSTRAINT main_producthistory_created_by_id_23d7c449_fk_auth_user_id FOREIGN KEY (created_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: users_profile users_profile_user_id_2112e78d_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_profile
+    ADD CONSTRAINT users_profile_user_id_2112e78d_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
